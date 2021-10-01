@@ -20,11 +20,19 @@ def subtrair(numero1, numero2):
 def multiplicar(numero1, numero2):
     return numero1 * numero2
 
+# esse é um exemplo de demonstração
 def dividir(numero1, numero2):
     if numero2 != 0:
         return numero1 / numero2
     else:
         return 'Não dividirás por zero'
+
+def dividir_try_except(numero1, numero2):
+    try:
+        return numero1 / numero2
+    except ZeroDivisionError:
+        return 'Não dividirás por zero'
+
 
 # Testes Unitários / Testes de Unidades
 
@@ -54,7 +62,11 @@ def test_somar_didatico():
 ])
 
 def test_somar(numero1, numero2, resultado):
-    assert somar(numero1,numero2) == resultado
+    try:
+        assert somar(numero1,numero2) == resultado
+    except AssertionError:
+        print(f'Entrou no Except: {AssertionError}')
+        pass
 
 def test_somar_resultado_negativo():
     assert somar(-1000,-2000) == -3000
@@ -65,9 +77,28 @@ def test_subtrair():
 def test_multiplicar():
     assert multiplicar(3,7) == 21
 
-#def test_dividir():
-    #dividir() ==
+def test_dividir():
+    assert dividir(8,0) == 2
 
+@pytest.mark.parametrize('numero1,numero2, resultado', [
+    (8,2,4),
+    (20,4,5),
+    (10,0,'Não dividirás por zero'),
+
+])
+def test_dividir_try_except(numero1,numero2,resultado):
+    assert dividir_try_except(numero1, numero2) == resultado
+
+
+def test_dividir_por_zero():
+    assert dividir(8, 0) == 'Não dividirás por zero'
+
+
+
+    # teste positivo - mostrar o resultado correto
+    #                - avançar  para a próxima etapa
+
+    # teste negativo - mostrar a mensagem de erro
 
 if __name__ == '__main__':
     print_hi('PyCharm')
